@@ -5,8 +5,8 @@ b) Remover nodo -feito
 c) Inserir aresta -feito
 d) Remover aresta  -feito
 e) Visualizar o grafo -feito
-f) Identificar Fontes e sumidouros
-g) Calcular o grau de entrada e o grau de saída de um vértice 
+f) Identificar Fontes e sumidouros -feito
+g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura
 i) busca em profundidade
 """
@@ -65,7 +65,7 @@ class grafo_lista:
                if ( elem.conteudo == vertice_u ):
                   vertice.adjacente.remove(elem)
    
-   def grau_de_entrada_saida(self, vertice_v):
+   def grau_de_entrada_saida(self, vertice_v, print_flag = False):
       grau_entrada = 0
       grau_saida = 0
       for vertice in self.vertices:
@@ -75,10 +75,22 @@ class grafo_lista:
             for elem in vertice.adjacente:
                if ( elem.conteudo == vertice_v ):
                   grau_entrada -= -1
-      print("grau de entrada é: ", grau_entrada )
-      print("grau de saida é: ", grau_saida )
+      if (print_flag):
+         print("grau de entrada é: ", grau_entrada )
+         print("grau de saida é: ", grau_saida )
+      return grau_entrada, grau_saida
+
+   def indentifica_fontes_e_sumidouros(self):
+      for vertice in self.vertices:
+         grau_entrada, grau_saida = self.grau_de_entrada_saida(vertice.conteudo)
+         _str = "vértice "+str(vertice.conteudo)
+         if ( grau_entrada == 0 ):
+            _str += " é fonte"
+         if ( grau_saida == 0 ):
+            _str += " é sumidouro"
+         print(_str)
             
-            
+
 
 
 #####__INICIO__DA_EXECUÇÃO__#####
@@ -92,7 +104,9 @@ grafo.cria_aresta("x", "y")
 grafo.cria_aresta("y", "z")
 grafo.print_grafo()
 #grafo.remove_vertice("a")
-#grafo.remove_aresta("x", "a")
+grafo.remove_aresta("x", "a")
 grafo.print_grafo()
 
-grafo.grau_de_entrada_saida("x")
+grafo.grau_de_entrada_saida("a", True)
+
+grafo.indentifica_fontes_e_sumidouros()
