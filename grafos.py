@@ -3,7 +3,7 @@
 a) Inserir nodo -feito
 b) Remover nodo -feito
 c) Inserir aresta -feito
-d) Remover aresta 
+d) Remover aresta  -feito
 e) Visualizar o grafo -feito
 f) Identificar Fontes e sumidouros
 g) Calcular o grau de entrada e o grau de saída de um vértice 
@@ -44,11 +44,11 @@ class grafo_lista:
             return vertice
       return None
    
-   def cria_aresta(self, vertice_v, vertice_u):
+   def cria_aresta(self, vertice_v, vertice_u):    #cria vertice direcionar de v para u
       vertice_a = self.busca_vertice(vertice_v)
       vertice_b = self.busca_vertice(vertice_u)
       vertice_a.adc_aresta(vertice_b)
-      vertice_b.adc_aresta(vertice_a)
+      #vertice_b.adc_aresta(vertice_a) #comentada para ser direcional
    
    def remove_vertice(self, vertice_v):
       for vertice in self.vertices:
@@ -58,6 +58,27 @@ class grafo_lista:
          if ( vertice.conteudo == vertice_v ):
             self.vertices.remove(vertice)
 
+   def remove_aresta(self, vertice_v, vertice_u):
+      for vertice in self.vertices:
+         if ( vertice.conteudo == vertice_v ):
+            for elem in vertice.adjacente:
+               if ( elem.conteudo == vertice_u ):
+                  vertice.adjacente.remove(elem)
+   
+   def grau_de_entrada_saida(self, vertice_v):
+      grau_entrada = 0
+      grau_saida = 0
+      for vertice in self.vertices:
+         if ( vertice.conteudo == vertice_v ):
+            grau_saida = len(vertice.adjacente)
+         else:
+            for elem in vertice.adjacente:
+               if ( elem.conteudo == vertice_v ):
+                  grau_entrada -= -1
+      print("grau de entrada é: ", grau_entrada )
+      print("grau de saida é: ", grau_saida )
+            
+            
 
 
 #####__INICIO__DA_EXECUÇÃO__#####
@@ -68,6 +89,10 @@ grafo.add_vertice("z")
 grafo.add_vertice("a")
 grafo.cria_aresta("x", "a")
 grafo.cria_aresta("x", "y")
+grafo.cria_aresta("y", "z")
 grafo.print_grafo()
-grafo.remove_vertice("a")
+#grafo.remove_vertice("a")
+#grafo.remove_aresta("x", "a")
 grafo.print_grafo()
+
+grafo.grau_de_entrada_saida("x")
