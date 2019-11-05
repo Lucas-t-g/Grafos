@@ -30,9 +30,16 @@ class grafo_matriz:
       self.matriz_adj = np.concatenate((self.matriz_adj, nova_coluna), axis=1)
       nova_linha = np.zeros([1, tam])
       self.matriz_adj = np.concatenate((self.matriz_adj, nova_linha))
+
    def mostra_grafo(self):
       print(self.vertices)
       print (grafo.matriz_adj)
+   
+   def adiciona_aresta(self, vertice_v, vertice_u):
+      if ( vertice_v and vertice_u in self.vertices ):
+         v = self.vertices.index(vertice_v)
+         u = self.vertices.index(vertice_u)
+         self.matriz_adj[v][u] = 1
       
       
 
@@ -41,7 +48,7 @@ grafo = grafo_matriz(["x", "y", "z"])
 grafo.mostra_grafo()
 grafo.adicona_vertice("a")
 grafo.mostra_grafo()
-grafo.adicona_vertice("c")
+grafo.adiciona_aresta("a", "x")
 grafo.mostra_grafo()
-grafo.adicona_vertice("d")
+grafo.adiciona_aresta("x", "a")
 grafo.mostra_grafo()
