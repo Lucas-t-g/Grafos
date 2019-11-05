@@ -89,7 +89,7 @@ class grafo_lista:
          if ( grau_saida == 0 ):
             _str += " é sumidouro"
          print(_str)
-            
+   
 
 
 
