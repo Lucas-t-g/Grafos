@@ -7,8 +7,8 @@ b) Remover nodo -feito
 c) Inserir aresta -feito
 d) Remover aresta  -feito
 e) Visualizar o grafo -feito
-f) Identificar Fontes e sumidouros -feito
-g) Calcular o grau de entrada e o grau de saída de um vértice -feito
+f) Identificar Fontes e sumidouros 
+g) Calcular o grau de entrada e o grau de saída de um vértice 
 h) Busca em largura
 i) busca em profundidade
 """
@@ -40,15 +40,23 @@ class grafo_matriz:
          v = self.vertices.index(vertice_v)
          u = self.vertices.index(vertice_u)
          self.matriz_adj[v][u] = 1
-      
-      
+   def remove_areseta(self,vertice_v, vertice_u):
+      if ( vertice_v and vertice_u in self.vertices ):
+         v = self.vertices.index(vertice_v)
+         u = self.vertices.index(vertice_u)
+         self.matriz_adj[v][u] = 0
 
 
-grafo = grafo_matriz(["x", "y", "z"])
+grafo = grafo_matriz(["x", "y", "z", "w"])
 grafo.mostra_grafo()
 grafo.adicona_vertice("a")
 grafo.mostra_grafo()
 grafo.adiciona_aresta("a", "x")
 grafo.mostra_grafo()
-grafo.adiciona_aresta("x", "a")
+grafo.adiciona_aresta("w", "a")
+grafo.adiciona_aresta("z", "a")
+grafo.adiciona_aresta("w", "z")
+grafo.adiciona_aresta("y", "w")
+grafo.mostra_grafo()
+grafo.remove_areseta("z", "a")
 grafo.mostra_grafo()
