@@ -46,7 +46,7 @@ class grafo_matriz:
          u = self.vertices.index(vertice_u)
          self.matriz_adj[v][u] = 0
 
-
+#####__INICIO__DA_EXECUÇÃO__#####
 grafo = grafo_matriz(["x", "y", "z", "w"])
 grafo.mostra_grafo()
 grafo.adicona_vertice("a")
