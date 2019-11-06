@@ -7,8 +7,8 @@ d) Remover aresta  -feito
 e) Visualizar o grafo -feito
 f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
-h) Busca em largura
-i) busca em profundidade
+h) Busca em largura -feito
+i) busca em profundidade -feito
 """
 
 class vertice:
