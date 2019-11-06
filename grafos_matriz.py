@@ -7,7 +7,7 @@ b) Remover nodo -feito
 c) Inserir aresta -feito
 d) Remover aresta  -feito
 e) Visualizar o grafo -feito
-f) Identificar Fontes e sumidouros 
+f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura
 i) busca em profundidade
@@ -63,6 +63,16 @@ class grafo_matriz:
                print("grau de entrada é: ", grau_entrada )
                print("grau de saida é: ", grau_saida )
             return grau_entrada, grau_saida
+   
+   def indentifica_fontes_e_sumidouros(self):
+      for vertice_u in self.vertices:
+         grau_entrada, grau_saida = self.grau_de_entrada_e_saida(vertice_u)
+         _str = "vértice "+str(vertice_u)
+         if ( grau_entrada == 0 ):
+            _str += " é fonte"
+         if ( grau_saida == 0 ):
+            _str += " é sumidouro"
+         print(_str)
 
 
 #####__INICIO__DA_EXECUÇÃO__#####
@@ -79,3 +89,4 @@ grafo.adiciona_aresta("y", "w")
 grafo.remove_areseta("z", "a")
 grafo.mostra_grafo()
 grafo.grau_de_entrada_e_saida( "z",print_flag = True)
+grafo.indentifica_fontes_e_sumidouros()
