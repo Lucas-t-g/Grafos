@@ -46,17 +46,36 @@ class grafo_matriz:
          u = self.vertices.index(vertice_u)
          self.matriz_adj[v][u] = 0
 
+   def grau_de_entrada_e_saida(self, vertice_u, print_flag = False):
+      for i in range(len(self.vertices)):
+         grau_entrada = 0
+         grau_saida = 0
+         if ( self.vertices[i] == vertice_u ):
+            for j in range(len(self.vertices)):
+               if ( self.matriz_adj[i][j] == 1 ):
+                  grau_saida -= -1
+
+            for j in range(len(self.vertices)):
+               if ( self.matriz_adj[j][i] == 1 ):
+                  grau_entrada -= -1
+            if (print_flag):
+               print(self.vertices[i])
+               print("grau de entrada é: ", grau_entrada )
+               print("grau de saida é: ", grau_saida )
+            return grau_entrada, grau_saida
+
+
 #####__INICIO__DA_EXECUÇÃO__#####
 grafo = grafo_matriz(["x", "y", "z", "w"])
-grafo.mostra_grafo()
+#grafo.mostra_grafo()
 grafo.adicona_vertice("a")
-grafo.mostra_grafo()
+#grafo.mostra_grafo()
 grafo.adiciona_aresta("a", "x")
-grafo.mostra_grafo()
 grafo.adiciona_aresta("w", "a")
 grafo.adiciona_aresta("z", "a")
 grafo.adiciona_aresta("w", "z")
 grafo.adiciona_aresta("y", "w")
-grafo.mostra_grafo()
+#grafo.mostra_grafo()
 grafo.remove_areseta("z", "a")
 grafo.mostra_grafo()
+grafo.grau_de_entrada_e_saida( "z",print_flag = True)
