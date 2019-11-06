@@ -8,7 +8,7 @@ c) Inserir aresta -feito
 d) Remover aresta  -feito
 e) Visualizar o grafo -feito
 f) Identificar Fontes e sumidouros 
-g) Calcular o grau de entrada e o grau de saída de um vértice 
+g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura
 i) busca em profundidade
 """
