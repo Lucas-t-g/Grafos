@@ -74,6 +74,9 @@ class grafo_matriz:
             _str += " é sumidouro"
          print(_str)
 
+   #def busca_em_profundidade(self):
+      
+
 
 #####__INICIO__DA_EXECUÇÃO__#####
 grafo = grafo_matriz(["x", "y", "z", "w"])

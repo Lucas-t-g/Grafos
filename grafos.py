@@ -43,6 +43,15 @@ class vertice:
                   return aux
          return None
    
+   def busca_profundidade_2(self):
+      print( self.conteudo )
+      self.bandeira_de_visita = 1
+      for vertice in self.adjacente:
+         if ( vertice.bandeira_de_visita == 0):
+            vertice.busca_profundidade_2()
+         else:
+            print( "backtrack" )
+   
    def busca_largura(self):
       self.bandeira_de_visita = 1      #branco = 0 ; cinza = 1; preto = 2
       self.distancia = 0
@@ -205,4 +214,4 @@ grafo.cria_aresta("u", "y")
 
 grafo.print_grafo()
 
-grafo.vertices[1].busca_largura()
+grafo.vertices[1].busca_profundidade_2()
