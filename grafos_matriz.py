@@ -9,7 +9,7 @@ d) Remover aresta  -feito
 e) Visualizar o grafo -feito
 f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
-h) Busca em largura
+h) Busca em largura -feita
 i) busca em profundidade -feita
 j) Implmentar os algoritmos Prim e Kruskal
 """
@@ -97,6 +97,27 @@ class grafo_matriz:
             self.busca_em_profundidade(self.vertices[j])
             print("backtrack")
 
+   def busca_largura(self, vertice):
+      for i in range(len(self.vertices)):
+         if ( self.vertices[i] == vertice ):
+            print( self.vertices[i] )
+            self.vertices_2[i].bandeira_de_visita = 1
+            self.vertices_2[i].distancia = 0
+            self.vertices_2[i].pai = None
+            break
+      lista = [self.vertices_2[i]]
+      while ( len(lista) > 0 ):
+         vertice_u = lista.pop()
+         i = self.vertices_2.index(vertice_u)
+         print("vertice u: ", vertice_u.conteudo)
+         for j in range(len(self.vertices)):
+            if (self.matriz_adj[i][j] != 0 and self.vertices_2[j].bandeira_de_visita == 0):
+               self.vertices_2[j].bandeira_de_visita = 1
+               self.vertices_2[j].distancia = vertice_u.distancia + 1
+               self.vertices_2[j].pai = vertice_u.conteudo
+               lista.insert(0, self.vertices_2[j])
+               print("vertice w: ", self.vertices_2[j].conteudo, "distância: ", self.vertices_2[j].distancia, "pai: ", self.vertices_2[j].pai, "bdv: ", self.vertices_2[j].bandeira_de_visita)
+
 
 
 
@@ -115,4 +136,5 @@ grafo.remove_areseta("z", "a")
 grafo.mostra_grafo()
 #grafo.grau_de_entrada_e_saida( "z",print_flag = True)
 #grafo.indentifica_fontes_e_sumidouros()
-grafo.busca_em_profundidade("w")
+#grafo.busca_em_profundidade("w")
+grafo.busca_largura("w")
