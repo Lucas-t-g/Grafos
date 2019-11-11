@@ -9,6 +9,7 @@ f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura -feito
 i) busca em profundidade -feito
+j) Implmentar os algoritmos Prim e Kruskal
 """
 
 class vertice:
@@ -49,7 +50,6 @@ class vertice:
       for vertice in self.adjacente:
          if ( vertice.bandeira_de_visita == 0):
             vertice.busca_profundidade_2()
-         else:
             print( "backtrack" )
    
    def busca_largura(self):
@@ -214,4 +214,5 @@ grafo.cria_aresta("u", "y")
 
 grafo.print_grafo()
 
-grafo.vertices[1].busca_profundidade_2()
+#grafo.vertices[1].busca_profundidade_2()
+grafo.vertices[0].busca_largura()

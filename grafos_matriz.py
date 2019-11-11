@@ -11,6 +11,7 @@ f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura
 i) busca em profundidade
+j) Implmentar os algoritmos Prim e Kruskal
 """
 
 class vertice:
