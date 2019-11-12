@@ -9,7 +9,7 @@ d) Remover aresta  -feito
 e) Visualizar o grafo -feito
 f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
-h) Busca em largura -feita
+h) Busca em largura -feit
 i) busca em profundidade -feita
 j) Implmentar os algoritmos Prim e Kruskal
 """
@@ -41,6 +41,13 @@ class grafo_matriz:
       self.matriz_adj = np.concatenate((self.matriz_adj, nova_coluna), axis=1)
       nova_linha = np.zeros([1, tam])
       self.matriz_adj = np.concatenate((self.matriz_adj, nova_linha))
+
+   def remove_vertice(self, vertice):
+      i = self.vertices.index(vertice)
+      del(self.vertices[i])
+      del(self.vertices_2[i])
+      self.matriz_adj = np.delete(self.matriz_adj, i, 0)
+      self.matriz_adj = np.delete(self.matriz_adj, i, 1)
 
    def mostra_grafo(self):
       print(self.vertices)
@@ -137,4 +144,6 @@ grafo.mostra_grafo()
 #grafo.grau_de_entrada_e_saida( "z",print_flag = True)
 #grafo.indentifica_fontes_e_sumidouros()
 #grafo.busca_em_profundidade("w")
-grafo.busca_largura("w")
+#grafo.busca_largura("w")
+grafo.remove_vertice("z")
+grafo.mostra_grafo()
