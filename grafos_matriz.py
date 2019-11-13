@@ -21,6 +21,14 @@ def np_array_None(linhas, colunas):
    matriz = np.array(matriz)
    return matriz
 
+class arestas_se:
+   def __init__(self, custo, i, j):
+      self.custo = custo
+      self.i = i
+      self.j = j
+   def print_arestas_se(self):
+      print("(",self.custo, self.i, self.j, ")")
+
 class vertice:
    def __init__(self, conteudo):
       self.conteudo = conteudo      #referece ao conteudo do vertice
@@ -63,11 +71,11 @@ class grafo_matriz:
       print(self.vertices)
       print (grafo.matriz_adj)
    
-   def adiciona_aresta(self, vertice_v, vertice_u):
+   def adiciona_aresta(self, vertice_v, vertice_u, custo = 1):
       if ( vertice_v and vertice_u in self.vertices ):
          v = self.vertices.index(vertice_v)
          u = self.vertices.index(vertice_u)
-         self.matriz_adj[v][u] = 1
+         self.matriz_adj[v][u] = custo
    def remove_areseta(self,vertice_v, vertice_u):
       if ( vertice_v and vertice_u in self.vertices ):
          v = self.vertices.index(vertice_v)
@@ -137,6 +145,25 @@ class grafo_matriz:
                lista.insert(0, self.vertices_2[j])
                print("vertice w: ", self.vertices_2[j].conteudo, "distância: ", self.vertices_2[j].distancia, "pai: ", self.vertices_2[j].pai, "bdv: ", self.vertices_2[j].bandeira_de_visita)
 
+   def lista_arestas(self):
+      lista  = []
+      tam = len(self.vertices)
+      for i in range(tam):
+         for j in range(tam):
+            if ( self.matriz_adj[i][j] != None ):
+               lista.append(arestas_se(self.matriz_adj[i][j], i, j))
+
+      lista.sort(key=lambda a: a.custo)
+      return lista
+
+   """
+   def kruskal(self, vertice_u):
+      tam = len(self.vertices)
+      vertices_aux = self.vertices
+      matriz_aux = np_array_None(tam, tam))
+      for elem in
+   """
+
 
 
 
@@ -145,17 +172,18 @@ grafo = grafo_matriz(["x", "y", "z", "w"])
 #grafo.mostra_grafo()
 grafo.adicona_vertice("a")
 #grafo.mostra_grafo()
-grafo.adiciona_aresta("a", "x")
+grafo.adiciona_aresta("a", "x", 4)
 grafo.adiciona_aresta("w", "a")
-grafo.adiciona_aresta("z", "a")
-grafo.adiciona_aresta("w", "z")
-grafo.adiciona_aresta("y", "w")
+grafo.adiciona_aresta("z", "a", 3)
+grafo.adiciona_aresta("w", "z", 7)
+grafo.adiciona_aresta("y", "w", 10)
 #grafo.mostra_grafo()
-grafo.remove_areseta("a", "x")
+#grafo.remove_areseta("a", "x")
 #grafo.mostra_grafo()
 #grafo.grau_de_entrada_e_saida( "z",print_flag = True)
 #grafo.indentifica_fontes_e_sumidouros()
 #grafo.busca_em_profundidade("w")
 #grafo.busca_largura("w")
-grafo.remove_vertice("z")
+#grafo.remove_vertice("z")
 grafo.mostra_grafo()
+grafo.lista_arestas()
