@@ -13,6 +13,13 @@ h) Busca em largura -feit
 i) busca em profundidade -feita
 j) Implmentar os algoritmos Prim e Kruskal
 """
+def np_array_None(linhas, colunas):
+   aux = [None]*colunas
+   matriz = []
+   for i in range(linhas):
+      matriz.append(aux)
+   matriz = np.array(matriz)
+   return matriz
 
 class vertice:
    def __init__(self, conteudo):
@@ -26,20 +33,23 @@ class grafo_matriz:
    def __init__(self, lista = []):
       tam = len(lista)
       self.vertices = lista
-      
       self.vertices_2 = []
       for elem in lista:
          self.vertices_2.append(vertice(elem))
+      self.matriz_adj = np_array_None(tam, tam)
 
-      self.matriz_adj = np.zeros([tam, tam])
+      for linha in self.matriz_adj:
+         for elem in linha:
+            elem = None
+
 
    def adicona_vertice(self, conteudo):
       self.vertices.append(conteudo)
       self.vertices_2.append(vertice(conteudo))
       tam = len(self.vertices)
-      nova_coluna = np.zeros([tam-1, 1])
+      nova_coluna = np_array_None(tam-1, 1)
       self.matriz_adj = np.concatenate((self.matriz_adj, nova_coluna), axis=1)
-      nova_linha = np.zeros([1, tam])
+      nova_linha = np_array_None(1, tam)
       self.matriz_adj = np.concatenate((self.matriz_adj, nova_linha))
 
    def remove_vertice(self, vertice):
@@ -62,7 +72,7 @@ class grafo_matriz:
       if ( vertice_v and vertice_u in self.vertices ):
          v = self.vertices.index(vertice_v)
          u = self.vertices.index(vertice_u)
-         self.matriz_adj[v][u] = 0
+         self.matriz_adj[v][u] = None
 
    def grau_de_entrada_e_saida(self, vertice_u, print_flag = False):
       for i in range(len(self.vertices)):
@@ -70,11 +80,11 @@ class grafo_matriz:
          grau_saida = 0
          if ( self.vertices[i] == vertice_u ):
             for j in range(len(self.vertices)):
-               if ( self.matriz_adj[i][j] == 1 ):
+               if ( self.matriz_adj[i][j] != None ):
                   grau_saida -= -1
 
             for j in range(len(self.vertices)):
-               if ( self.matriz_adj[j][i] == 1 ):
+               if ( self.matriz_adj[j][i] != None ):
                   grau_entrada -= -1
             if (print_flag):
                print(self.vertices[i])
@@ -86,9 +96,11 @@ class grafo_matriz:
       for vertice_u in self.vertices:
          grau_entrada, grau_saida = self.grau_de_entrada_e_saida(vertice_u)
          _str = "vértice "+str(vertice_u)
-         if ( grau_entrada == 0 ):
+         if ( grau_entrada == 0 and grau_saida == 0 ):
+            _str += " é nada"
+         elif ( grau_entrada == 0 ):
             _str += " é fonte"
-         if ( grau_saida == 0 ):
+         elif ( grau_saida == 0 ):
             _str += " é sumidouro"
          print(_str)
 
@@ -139,8 +151,8 @@ grafo.adiciona_aresta("z", "a")
 grafo.adiciona_aresta("w", "z")
 grafo.adiciona_aresta("y", "w")
 #grafo.mostra_grafo()
-grafo.remove_areseta("z", "a")
-grafo.mostra_grafo()
+grafo.remove_areseta("a", "x")
+#grafo.mostra_grafo()
 #grafo.grau_de_entrada_e_saida( "z",print_flag = True)
 #grafo.indentifica_fontes_e_sumidouros()
 #grafo.busca_em_profundidade("w")
