@@ -68,14 +68,30 @@ class grafo_matriz:
       self.matriz_adj = np.delete(self.matriz_adj, i, 1)
 
    def mostra_grafo(self):
-      print(self.vertices)
-      print (grafo.matriz_adj)
+      _str = '     ['
+      for elem in self.vertices:
+         _str += '{:>5},'.format(elem)
+      print(_str,"]")
+      tam = len(self.vertices)
+      for i in range(tam):
+         _str = '{:>5}['.format(self.vertices[i])
+         for j in range(tam):
+            _str += '{:>5},'.format(str(self.matriz_adj[i][j]))
+         print(_str,"]")
    
    def adiciona_aresta(self, vertice_v, vertice_u, custo = 1):
       if ( vertice_v and vertice_u in self.vertices ):
          v = self.vertices.index(vertice_v)
          u = self.vertices.index(vertice_u)
          self.matriz_adj[v][u] = custo
+
+   def adiciona_aresta_sem_direcao(self, vertice_v, vertice_u, custo = 1):
+      if ( vertice_v and vertice_u in self.vertices ):
+         v = self.vertices.index(vertice_v)
+         u = self.vertices.index(vertice_u)
+         self.matriz_adj[v][u] = custo
+         self.matriz_adj[u][v] = custo
+
    def remove_areseta(self,vertice_v, vertice_u):
       if ( vertice_v and vertice_u in self.vertices ):
          v = self.vertices.index(vertice_v)
@@ -120,9 +136,28 @@ class grafo_matriz:
             break
 
       for j in range(len(self.vertices)):
-         if(self.matriz_adj[i, j] != 0 and self.vertices_2[j].bandeira_de_visita == 0):
+         if(self.matriz_adj[i, j] != None and self.vertices_2[j].bandeira_de_visita == 0):
             self.busca_em_profundidade(self.vertices[j])
             print("backtrack")
+   
+   def busca_em_profundidade_2(self, vertice_u, vertice_x):
+      if( vertice_u == vertice_x ):
+         #print("achou")
+         return True
+
+      for i in range(len(self.vertices)):
+         if ( self.vertices[i] == vertice_u ):
+            #print( self.vertices[i] )
+            self.vertices_2[i].bandeira_de_visita = 1
+            break
+
+      for j in range(len(self.vertices)):
+         if(self.matriz_adj[i, j] != None and self.vertices_2[j].bandeira_de_visita == 0):
+            temp = self.busca_em_profundidade_2(self.vertices[j], vertice_x)
+            if (temp):
+               return temp
+            #print("backtrack")
+      return False
 
    def busca_largura(self, vertice):
       for i in range(len(self.vertices)):
@@ -138,7 +173,7 @@ class grafo_matriz:
          i = self.vertices_2.index(vertice_u)
          print("vertice u: ", vertice_u.conteudo)
          for j in range(len(self.vertices)):
-            if (self.matriz_adj[i][j] != 0 and self.vertices_2[j].bandeira_de_visita == 0):
+            if (self.matriz_adj[i][j] != None and self.vertices_2[j].bandeira_de_visita == 0):
                self.vertices_2[j].bandeira_de_visita = 1
                self.vertices_2[j].distancia = vertice_u.distancia + 1
                self.vertices_2[j].pai = vertice_u.conteudo
@@ -156,27 +191,78 @@ class grafo_matriz:
       lista.sort(key=lambda a: a.custo)
       return lista
 
-   """
-   def kruskal(self, vertice_u):
+   def busca_largura_2(self, vertice, vertice_x):
+      for i in range(len(self.vertices)):
+         if ( self.vertices[i] == vertice ):
+            #print( self.vertices[i] )
+            self.vertices_2[i].bandeira_de_visita = 1
+            self.vertices_2[i].distancia = 0
+            self.vertices_2[i].pai = None
+            break
+      lista = [self.vertices_2[i]]
+      while ( len(lista) > 0 ):
+         vertice_u = lista.pop()
+         i = self.vertices_2.index(vertice_u)
+         #print("vertice u: ", vertice_u.conteudo)
+         for j in range(len(self.vertices)):
+            if (self.matriz_adj[i][j] != None and self.vertices_2[j].bandeira_de_visita == 0):
+               self.vertices_2[j].bandeira_de_visita = 1
+               self.vertices_2[j].distancia = vertice_u.distancia + 1
+               self.vertices_2[j].pai = vertice_u.conteudo
+               lista.insert(0, self.vertices_2[j])
+               #print("vertice w: ", self.vertices_2[j].conteudo, "distância: ", self.vertices_2[j].distancia, "pai: ", self.vertices_2[j].pai, "bdv: ", self.vertices_2[j].bandeira_de_visita)
+               print("igua: ",self.vertices_2[j].conteudo, vertice_x)
+               if( self.vertices_2[j].conteudo == vertice_x ):
+                  return self.vertices_2[j]
+      return None
+   
+   def nao_e_geradora(self):
       tam = len(self.vertices)
-      vertices_aux = self.vertices
-      matriz_aux = np_array_None(tam, tam))
-      for elem in
-   """
+      for vertice_u in self.vertices:
+         for vertice_v in self.vertices:
+            #print("u - ", vertice_u, " || v - ", vertice_v)
+            self.zera_visitas()
+            if ( self.busca_em_profundidade_2(vertice_u, vertice_v) == False ):
+               return True
+      return False
 
+   def kruskal_sem_direção(self):
+      aux = grafo_matriz(self.vertices)
+      arestas = self.lista_arestas()
+      while ( aux.nao_e_geradora() and len(arestas) > 0 ):
+         aresta = arestas.pop(0)
+         aux.zera_visitas()
+         temp = aux.busca_em_profundidade_2(self.vertices[aresta.i], self.vertices[aresta.j])
+         if ( not temp ):
+            #print("i = ", aresta.i," -> ", aux.vertices[aresta.i], "|| j = ", aresta.j," -> ", aux.vertices[aresta.j])
+            aux.matriz_adj[aresta.i][aresta.j] = aresta.custo
+            aux.matriz_adj[aresta.j][aresta.i] = aresta.custo
 
-
+      return aux
+   
+   def zera_visitas(self):
+      for vertice in self.vertices_2:
+         vertice.bandeira_de_visita = 0
 
 #####__INICIO__DA_EXECUÇÃO__#####
-grafo = grafo_matriz(["x", "y", "z", "w"])
+grafo = grafo_matriz(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
 #grafo.mostra_grafo()
-grafo.adicona_vertice("a")
+#grafo.adicona_vertice("a")
 #grafo.mostra_grafo()
-grafo.adiciona_aresta("a", "x", 4)
-grafo.adiciona_aresta("w", "a")
-grafo.adiciona_aresta("z", "a", 3)
-grafo.adiciona_aresta("w", "z", 7)
-grafo.adiciona_aresta("y", "w", 10)
+grafo.adiciona_aresta_sem_direcao("a", "b", 4)
+grafo.adiciona_aresta_sem_direcao("b", "c", 8)
+grafo.adiciona_aresta_sem_direcao("c", "d", 7)
+grafo.adiciona_aresta_sem_direcao("d", "e", 9)
+grafo.adiciona_aresta_sem_direcao("e", "f", 10)
+grafo.adiciona_aresta_sem_direcao("f", "g", 2)
+grafo.adiciona_aresta_sem_direcao("g", "h", 1)
+grafo.adiciona_aresta_sem_direcao("h", "a", 8)
+grafo.adiciona_aresta_sem_direcao("b", "h", 11)
+grafo.adiciona_aresta_sem_direcao("h", "i", 7)
+grafo.adiciona_aresta_sem_direcao("i", "c", 2)
+grafo.adiciona_aresta_sem_direcao("c", "f", 4)
+grafo.adiciona_aresta_sem_direcao("i", "g", 6)
+grafo.adiciona_aresta_sem_direcao("d", "f", 14)
 #grafo.mostra_grafo()
 #grafo.remove_areseta("a", "x")
 #grafo.mostra_grafo()
@@ -186,4 +272,6 @@ grafo.adiciona_aresta("y", "w", 10)
 #grafo.busca_largura("w")
 #grafo.remove_vertice("z")
 grafo.mostra_grafo()
-grafo.lista_arestas()
+#print(grafo.nao_e_geradora())
+aux = grafo.kruskal_sem_direção()
+aux.mostra_grafo()
