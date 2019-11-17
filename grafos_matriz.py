@@ -37,7 +37,9 @@ class vertice:
       self.distancia = None
       self.pai = None
    def print_vertice(self):
-      print("v: ", self.conteudo, " || pai: ", self.pai, " || d: ", self.distancia, " || bdv: ", self.bandeira_de_visita)
+      #print("v: ", self.conteudo, " || pai: ", self.pai, " || d: ", self.distancia, " || bdv: ", self.bandeira_de_visita)
+      _str = 'v: {:^6} | pai: {:^6} | d: {:^6} | bdv: {:^6}'.format(str(self.conteudo), str(self.pai), str(self.distancia), str(self.bandeira_de_visita))
+      print(_str)
 
 class grafo_matriz:
    def __init__(self, lista = []):
@@ -254,14 +256,7 @@ class grafo_matriz:
             return False
       return True
 
-   def menor_distancia_nao_visitado(self):
-      i = 0
-      for vertice in self.vertices_2:
-         if ( vertice.distancia < self.vertices_2[i].distancia and vertice.bandeira_de_visita == 0 ):
-            i = self.vertices.index(vertice.conteudo)
-      return i
-
-   def prim_sem_direcao(self, raiz = False):
+   def prim_sem_direcao(self, raiz = False, teste_print = True, atualiza_matriz = False):
 
       self.zera_visitas()
       raiz = 0 if (raiz == False) else self.vertices.index(raiz)
@@ -273,18 +268,14 @@ class grafo_matriz:
       while ( len(Q) > 0 ):
          Q.sort(key=lambda a: a.distancia)
          vertice_u = Q.pop(0)
-         vertice_u.print_vertice()
+         #vertice_u.print_vertice()
          V.append(vertice_u)
 
          i = self.vertices.index(vertice_u.conteudo)
-         _str = ""
-         for elem in Q:
-            _str += str(elem.conteudo)+":"+str(elem.distancia)+" | "
-         print(_str)
 
          for j in range(len(self.vertices)):
             if ( self.matriz_adj[i][j] != None ):  #para pegar somente aqueles que são adjacentes a 'i'
-               print(i,j)
+               #print(i,j)
                pertence_Q = False
                for index in range(len(Q)):
                   if ( Q[index].conteudo == self.vertices[j] ):
@@ -293,9 +284,16 @@ class grafo_matriz:
                if ( pertence_Q and self.matriz_adj[i][j] < Q[index].distancia ):
                   Q[index].pai = vertice_u.conteudo
                   Q[index].distancia = self.matriz_adj[i][j]
-      for elem in V:
-         print(elem.print_vertice())
-         
+      if( teste_print ):
+         for elem in V:
+            elem.print_vertice()
+      if( atualiza_matriz ):
+         for i in range(len(self.vertices)):
+            for j in range(len(self.vertices)):
+               self.matriz_adj[i][j] = None
+         for elem in V:
+            self.adiciona_aresta_sem_direcao(elem.conteudo, elem.pai, elem.distancia)
+
 
 #####__INICIO__DA_EXECUÇÃO__#####
 grafo = grafo_matriz(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
@@ -328,4 +326,6 @@ grafo.mostra_grafo()
 #print(grafo.nao_e_geradora())
 #aux = grafo.kruskal_sem_direcao()
 #aux.mostra_grafo()
-grafo.prim_sem_direcao("a")
+print("{:_>100}".format("_"))
+grafo.prim_sem_direcao("a", teste_print=False, atualiza_matriz=True)
+grafo.mostra_grafo()
