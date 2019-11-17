@@ -12,6 +12,7 @@ g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura -feit
 i) busca em profundidade -feita
 j) Implmentar os algoritmos Prim e Kruskal - feito
+i) Implmentar os algoritmos Bellamn-Ford e Djikstra
 """
 def np_array_None(linhas, colunas):
    aux = [None]*colunas
@@ -230,7 +231,7 @@ class grafo_matriz:
                return True
       return False
 
-   def kruskal_sem_direcao(self):
+   def kruskal_sem_direcao(self, teste_print = True, atualiza_matriz = False):
       aux = grafo_matriz(self.vertices)
       arestas = self.lista_arestas()
       while ( aux.nao_e_geradora() and len(arestas) > 0 ):
@@ -238,11 +239,13 @@ class grafo_matriz:
          aux.zera_visitas()
          temp = aux.busca_em_profundidade_2(self.vertices[aresta.i], self.vertices[aresta.j])
          if ( not temp ):
-            #print("i = ", aresta.i," -> ", aux.vertices[aresta.i], "|| j = ", aresta.j," -> ", aux.vertices[aresta.j])
+            if ( teste_print ):
+               print("i = ", aresta.i," -> ", aux.vertices[aresta.i], "|| j = ", aresta.j," -> ", aux.vertices[aresta.j])
             aux.matriz_adj[aresta.i][aresta.j] = aresta.custo
             aux.matriz_adj[aresta.j][aresta.i] = aresta.custo
 
-      return aux
+      if( atualiza_matriz ):
+         self.matriz_adj = aux.matriz_adj
    
    def zera_visitas(self):
       for vertice in self.vertices_2:
@@ -324,8 +327,9 @@ grafo.adiciona_aresta_sem_direcao("d", "f", 14)
 #grafo.remove_vertice("z")
 grafo.mostra_grafo()
 #print(grafo.nao_e_geradora())
-#aux = grafo.kruskal_sem_direcao()
-#aux.mostra_grafo()
+print("{:_>100}".format("_"))
+grafo.kruskal_sem_direcao(teste_print=False, atualiza_matriz=True)
+grafo.mostra_grafo()
 print("{:_>100}".format("_"))
 grafo.prim_sem_direcao("a", teste_print=False, atualiza_matriz=True)
 grafo.mostra_grafo()

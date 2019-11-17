@@ -10,6 +10,7 @@ g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura -feito
 i) busca em profundidade -feito
 j) Implmentar os algoritmos Prim e Kruskal
+i) Implmentar os algoritmos Bellamn-Ford e Djikstra
 """
 
 class vertice:
@@ -138,6 +139,8 @@ class grafo_lista:
          if ( grau_saida == 0 ):
             _str += " é sumidouro"
          print(_str)
+   
+   def kruskal_sem_direcao(self)
 
 
 #####__INICIO__DA_EXECUÇÃO__#####
