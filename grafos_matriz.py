@@ -11,7 +11,7 @@ f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura -feit
 i) busca em profundidade -feita
-j) Implmentar os algoritmos Prim e Kruskal
+j) Implmentar os algoritmos Prim e Kruskal - feito
 """
 def np_array_None(linhas, colunas):
    aux = [None]*colunas
@@ -26,16 +26,18 @@ class arestas_se:
       self.custo = custo
       self.i = i
       self.j = j
+
    def print_arestas_se(self):
       print("(",self.custo, self.i, self.j, ")")
 
 class vertice:
    def __init__(self, conteudo):
       self.conteudo = conteudo      #referece ao conteudo do vertice
-      self.adjacente = []           #os adjacentes ao vertice é uma lista de vertices
       self.bandeira_de_visita = 0
       self.distancia = None
       self.pai = None
+   def print_vertice(self):
+      print("v: ", self.conteudo, " || pai: ", self.pai, " || d: ", self.distancia, " || bdv: ", self.bandeira_de_visita)
 
 class grafo_matriz:
    def __init__(self, lista = []):
@@ -226,7 +228,7 @@ class grafo_matriz:
                return True
       return False
 
-   def kruskal_sem_direção(self):
+   def kruskal_sem_direcao(self):
       aux = grafo_matriz(self.vertices)
       arestas = self.lista_arestas()
       while ( aux.nao_e_geradora() and len(arestas) > 0 ):
@@ -243,6 +245,57 @@ class grafo_matriz:
    def zera_visitas(self):
       for vertice in self.vertices_2:
          vertice.bandeira_de_visita = 0
+         vertice.pai = None
+         vertice.distancia = float("inf")
+
+   def visitou_todos(self):
+      for vertice in self.vertices_2:
+         if ( vertice.bandeira_de_visita == 0 ):
+            return False
+      return True
+
+   def menor_distancia_nao_visitado(self):
+      i = 0
+      for vertice in self.vertices_2:
+         if ( vertice.distancia < self.vertices_2[i].distancia and vertice.bandeira_de_visita == 0 ):
+            i = self.vertices.index(vertice.conteudo)
+      return i
+
+   def prim_sem_direcao(self, raiz = False):
+
+      self.zera_visitas()
+      raiz = 0 if (raiz == False) else self.vertices.index(raiz)
+      self.vertices_2[raiz].bandeira_de_visita = 1
+      self.vertices_2[raiz].distancia = 0
+      i = raiz
+      Q = self.vertices_2
+      V = []
+      while ( len(Q) > 0 ):
+         Q.sort(key=lambda a: a.distancia)
+         vertice_u = Q.pop(0)
+         vertice_u.print_vertice()
+         V.append(vertice_u)
+
+         i = self.vertices.index(vertice_u.conteudo)
+         _str = ""
+         for elem in Q:
+            _str += str(elem.conteudo)+":"+str(elem.distancia)+" | "
+         print(_str)
+
+         for j in range(len(self.vertices)):
+            if ( self.matriz_adj[i][j] != None ):  #para pegar somente aqueles que são adjacentes a 'i'
+               print(i,j)
+               pertence_Q = False
+               for index in range(len(Q)):
+                  if ( Q[index].conteudo == self.vertices[j] ):
+                     pertence_Q = True
+                     break
+               if ( pertence_Q and self.matriz_adj[i][j] < Q[index].distancia ):
+                  Q[index].pai = vertice_u.conteudo
+                  Q[index].distancia = self.matriz_adj[i][j]
+      for elem in V:
+         print(elem.print_vertice())
+         
 
 #####__INICIO__DA_EXECUÇÃO__#####
 grafo = grafo_matriz(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
@@ -273,5 +326,6 @@ grafo.adiciona_aresta_sem_direcao("d", "f", 14)
 #grafo.remove_vertice("z")
 grafo.mostra_grafo()
 #print(grafo.nao_e_geradora())
-aux = grafo.kruskal_sem_direção()
-aux.mostra_grafo()
+#aux = grafo.kruskal_sem_direcao()
+#aux.mostra_grafo()
+grafo.prim_sem_direcao("a")
