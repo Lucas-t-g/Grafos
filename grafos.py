@@ -35,6 +35,9 @@ class vertice:
       for i in range(len(self.adjacente)):
          _str += " -> {:^3}|{:^3}".format(str(self.adjacente[i].conteudo), self.custo_aresta[i])
       print(_str)
+   
+   def print_vertice_detalhes(self):
+      print("v: {:^6} | pai: {:^6} | d: {:^6} | bdv: {:^6}".format(str(self.conteudo), str(self.pai), str(self.distancia), str(self.bandeira_de_visita)))
 
    def adc_aresta(self, vertice_v, custo = 1):
       self.adjacente.append(vertice_v)
@@ -114,7 +117,7 @@ class grafo_lista:
       vertice_a = self.busca_vertice(vertice_v)
       vertice_b = self.busca_vertice(vertice_u)
       vertice_a.adc_aresta(vertice_b, custo)
-      #vertice_b.adc_aresta(vertice_a) #comentada para ser direcional
+      #vertice_b.adc_aresta(vertice_a, custo) #comentada para ser direcional
 
    def cria_aresta_nao_direcional(self, vertice_v, vertice_u, custo = 1):    #cria vertice não direcional entre u e v
       if(vertice_u != None and vertice_v != None):
@@ -178,6 +181,15 @@ class grafo_lista:
       lista_arestas.sort(key=lambda a: a.custo)
       return lista_arestas
 
+   def lista_arestas_direcionadas(self):
+      lista_arestas = []
+      for vertice in self.vertices:
+         for i in range(len(vertice.adjacente)):
+            nova_aresta = arestas_se(vertice.custo_aresta[i], vertice.conteudo, vertice.adjacente[i].conteudo)
+            lista_arestas.append( nova_aresta )
+      lista_arestas.sort(key=lambda a: a.custo)
+      return lista_arestas
+
    def nao_e_geradora(self):
       for vertice_u in self.vertices:
          for vertice_v in self.vertices:
@@ -195,6 +207,7 @@ class grafo_lista:
    def zera_arestas(self):
       for vertice in self.vertices:
          vertice.adjacente = []
+         vertice.custo_aresta = []
    
    def kruskal_sem_direcao(self, teste_print = True, atualiza_matriz = False):
       lista_arestas = self.lista_arestas()
@@ -249,7 +262,52 @@ class grafo_lista:
          for elem in V:
             self.cria_aresta_nao_direcional(elem.conteudo, elem.pai, elem.distancia)
 
-   
+   def Bellman_ford_direcionado(self, raiz = False, teste_print = True, atualiza_grafo = False):
+      self.zera_visitas()
+      if ( raiz == False ):
+         raiz = 0
+      else:
+         raiz = self.index(raiz)
+      self.vertices[raiz].distancia = 0
+      self.vertices[raiz].bandeira_de_visita = 1
+      lista_arestas = self.lista_arestas_direcionadas()
+      if (teste_print):
+         for elem in lista_arestas:
+            elem.print_arestas_se()
+         print("inicio")
+      for i in range(len(self.vertices)-1):
+         if (teste_print):
+            print("____________________i:",i)
+            for elem in self.vertices:
+               elem.print_vertice_detalhes()
+         for aresta in lista_arestas:
+            vertice_u = self.busca_vertice(aresta.u)
+            vertice_v = self.busca_vertice(aresta.v)
+            if (vertice_v.distancia > vertice_u.distancia+aresta.custo):
+               vertice_v.distancia = vertice_u.distancia+aresta.custo
+               vertice_v.pai = vertice_u.conteudo
+               if (teste_print):
+                  print("relax", vertice_v.distancia)
+                  aresta.print_arestas_se()
+
+      for aresta in lista_arestas:
+         vertice_u = self.busca_vertice(aresta.u)
+         vertice_v = self.busca_vertice(aresta.v)
+         if (vertice_v.distancia > vertice_u.distancia+aresta.custo):
+            return False
+
+      if( teste_print ):
+         for elem in self.vertices:
+            elem.print_vertice_detalhes()
+
+      if ( atualiza_grafo ):
+         self.zera_arestas()
+         for vertice_u in self.vertices:
+            for aresta in lista_arestas:
+               if (aresta.u == vertice_u.pai and aresta.v == vertice_u.conteudo):
+                  self.cria_aresta( vertice_u.pai, vertice_u.conteudo, aresta.custo)
+                  break
+
 
 #####__INICIO__DA_EXECUÇÃO__#####
 """
@@ -292,8 +350,9 @@ grafo.print_grafo()
 
 #grafo.vertices[4].busca_profundidade("z")
 """
-grafo = grafo_lista(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
+
 """
+grafo = grafo_lista(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
 grafo.cria_aresta("r", "s")
 grafo.cria_aresta("s", "r")#
 
@@ -324,6 +383,9 @@ grafo.cria_aresta("x", "y")#
 grafo.cria_aresta("y", "u")
 grafo.cria_aresta("u", "y")#
 """
+
+"""
+grafo = grafo_lista(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
 grafo.cria_aresta_nao_direcional("a", "b", 4)
 grafo.cria_aresta_nao_direcional("b", "c", 8)
 grafo.cria_aresta_nao_direcional("c", "d", 7)
@@ -339,7 +401,19 @@ grafo.cria_aresta_nao_direcional("c", "f", 4)
 grafo.cria_aresta_nao_direcional("i", "g", 6)
 grafo.cria_aresta_nao_direcional("d", "f", 14)
 grafo.print_grafo()
-
+"""
+grafo = grafo_lista(["s", "t", "x", "y", "z"])
+grafo.cria_aresta("s", "t", 6)
+grafo.cria_aresta("s", "y", 7)
+grafo.cria_aresta("t", "x", 5)
+grafo.cria_aresta("x", "t", -2)
+grafo.cria_aresta("t", "y", 8)
+grafo.cria_aresta("t", "z", -4)
+grafo.cria_aresta("y", "x", -3)
+grafo.cria_aresta("y", "z", 9)
+grafo.cria_aresta("z", "s", 2)
+grafo.cria_aresta("z", "x", 7)
+grafo.print_grafo()
 
 #grafo.vertices[1].busca_profundidade_2()
 #grafo.vertices[0].busca_largura()
@@ -348,5 +422,6 @@ grafo.print_grafo()
 #   elem.print_arestas_se()
 
 #grafo.kruskal_sem_direcao()
-grafo.prim_sem_direcao(raiz = "a", teste_print=False, atualiza_matriz=True)
+#grafo.prim_sem_direcao(raiz = "a", teste_print=False, atualiza_matriz=True)
+grafo.Bellman_ford_direcionado(raiz="s", teste_print=False, atualiza_grafo=True)
 grafo.print_grafo()
