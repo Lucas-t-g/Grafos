@@ -9,7 +9,7 @@ f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura -feito
 i) busca em profundidade -feito
-j) Implmentar os algoritmos Prim e Kruskal
+j) Implmentar os algoritmos Prim e Kruskal -feito
 i) Implmentar os algoritmos Bellamn-Ford e Djikstra
 """
 class arestas_se:
@@ -32,8 +32,8 @@ class vertice:
    
    def print_vertice(self):
       _str = str(self.conteudo)
-      for adj in self.adjacente:
-         _str += " -> "+str(adj.conteudo)
+      for i in range(len(self.adjacente)):
+         _str += " -> {:^3}|{:^3}".format(str(self.adjacente[i].conteudo), self.custo_aresta[i])
       print(_str)
 
    def adc_aresta(self, vertice_v, custo = 1):
@@ -81,6 +81,12 @@ class vertice:
    
          vertice_u.bandeira_de_visita = 2
 
+   def custo_aresta_funcao(self, vertice_v):
+      for i in range(len(self.adjacente)):
+         if ( self.adjacente[i].conteudo == vertice_v ):
+            return self.custo_aresta[i]
+      return None
+
 
 class grafo_lista:
    def __init__(self, lista = []):
@@ -111,10 +117,11 @@ class grafo_lista:
       #vertice_b.adc_aresta(vertice_a) #comentada para ser direcional
 
    def cria_aresta_nao_direcional(self, vertice_v, vertice_u, custo = 1):    #cria vertice não direcional entre u e v
-      vertice_a = self.busca_vertice(vertice_v)
-      vertice_b = self.busca_vertice(vertice_u)
-      vertice_a.adc_aresta(vertice_b, custo)
-      vertice_b.adc_aresta(vertice_a, custo)
+      if(vertice_u != None and vertice_v != None):
+         vertice_a = self.busca_vertice(vertice_v)
+         vertice_b = self.busca_vertice(vertice_u)
+         vertice_a.adc_aresta(vertice_b, custo)
+         vertice_b.adc_aresta(vertice_a, custo)
    
    def remove_vertice(self, vertice_v):
       for vertice in self.vertices:
@@ -199,6 +206,48 @@ class grafo_lista:
          if( vertice_u.busca_profundidade(aresta.v) == None ):
             self.cria_aresta_nao_direcional(aresta.u, aresta.v)
 
+   def index(self, vertice_u):
+      for i in range(len(self.vertices)):
+         if ( self.vertices[i].conteudo == vertice_u ):
+            return i
+      return None
+
+   def prim_sem_direcao(self, raiz = False, teste_print = True, atualiza_matriz = False):
+      self.zera_visitas()
+      if ( raiz == False ):
+         raiz = 0
+      else:
+         raiz = self.index(raiz)
+   
+      self.vertices[raiz].distancia = 0
+      self.vertices[raiz].bandeira_de_visita = 1
+      Q = self.vertices
+      V = []
+      while( len(Q) > 0 ):
+         Q.sort(key=lambda a: a.distancia)
+         vertice_u = Q.pop(0)
+         V.append(vertice_u)
+         for vertice_v in vertice_u.adjacente:
+            pertence_Q = False
+            for index in range(len(Q)):      #acha o endereço em Q do vertice_v
+               if ( Q[index].conteudo == vertice_v.conteudo ):
+                  pertence_Q = True
+                  break
+            #vertice_u.print_vertice()
+            distancia_u_v = vertice_u.custo_aresta_funcao(vertice_v.conteudo)
+            if ( pertence_Q and distancia_u_v < Q[index].distancia ):
+               Q[index].pai = vertice_u.conteudo
+               Q[index].distancia = distancia_u_v
+      if( teste_print ):
+         for elem in V:
+            print("v: {:^6} | pai: {:^6} | d: {:^6} | bdv: {:^6}".format(str(elem.conteudo), str(elem.pai), str(elem.distancia), str(elem.bandeira_de_visita)))
+      if( atualiza_matriz ):
+         self.zera_arestas()
+         V.sort(key=lambda a : a.conteudo)
+         for elem in V:
+            self.vertices.append(vertice(elem.conteudo))
+         for elem in V:
+            self.cria_aresta_nao_direcional(elem.conteudo, elem.pai, elem.distancia)
 
    
 
@@ -298,5 +347,6 @@ grafo.print_grafo()
 #for elem in a:
 #   elem.print_arestas_se()
 
-grafo.kruskal_sem_direcao()
+#grafo.kruskal_sem_direcao()
+grafo.prim_sem_direcao(raiz = "a", teste_print=False, atualiza_matriz=True)
 grafo.print_grafo()
