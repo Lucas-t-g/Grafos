@@ -10,7 +10,7 @@ g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura -feito
 i) busca em profundidade -feito
 j) Implmentar os algoritmos Prim e Kruskal -feito
-i) Implmentar os algoritmos Bellamn-Ford e Djikstra -feito
+i) Implmentar os algoritmos Bellamn-Ford e Dijkstra -feito
 """
 class arestas_se:
    def __init__(self, custo, u, v):

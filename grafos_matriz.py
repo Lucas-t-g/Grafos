@@ -41,6 +41,9 @@ class vertice:
       #print("v: ", self.conteudo, " || pai: ", self.pai, " || d: ", self.distancia, " || bdv: ", self.bandeira_de_visita)
       _str = 'v: {:^6} | pai: {:^6} | d: {:^6} | bdv: {:^6}'.format(str(self.conteudo), str(self.pai), str(self.distancia), str(self.bandeira_de_visita))
       print(_str)
+   
+   def print_vertice_detalhes(self):
+      print("v: {:^6} | pai: {:^6} | d: {:^6} | bdv: {:^6}".format(str(self.conteudo), str(self.pai), str(self.distancia), str(self.bandeira_de_visita)))
 
 class grafo_matriz:
    def __init__(self, lista = []):
@@ -297,8 +300,95 @@ class grafo_matriz:
          for elem in V:
             self.adiciona_aresta_sem_direcao(elem.conteudo, elem.pai, elem.distancia)
 
+   def Bellman_ford_direcionado(self, raiz = False, teste_print = True, atualiza_matriz = False):
+      self.zera_visitas()
+      raiz = 0 if (raiz == False) else self.vertices.index(raiz)
+      self.vertices_2[raiz].distancia = 0
+      self.vertices_2[raiz].pai = None
+      self.vertices_2[raiz].bandeira_de_visita = 1
+      lista_arestas = self.lista_arestas()
+
+      for i in range(len(self.vertices)-1):
+         if (teste_print):
+            print("____________________i:",i)
+            for elem in self.vertices_2:
+               elem.print_vertice_detalhes()
+         for aresta in lista_arestas:
+            vertice_u = self.vertices_2[ aresta.i ]
+            vertice_v = self.vertices_2[ aresta.j ]
+            if ( vertice_v.distancia > aresta.custo + vertice_u.distancia ):
+               vertice_v.pai = vertice_u.conteudo
+               vertice_v.distancia = aresta.custo + vertice_u.distancia
+               if (teste_print):
+                  print("relax", vertice_v.distancia)
+                  aresta.print_arestas_se()
+
+      for aresta in lista_arestas:
+         vertice_u = self.vertices_2[ aresta.i ]
+         vertice_v = self.vertices_2[ aresta.j ]
+         if ( vertice_v.distancia > aresta.custo + vertice_u.distancia ):
+            return False
+         
+      if( teste_print ):
+         print("final:")
+         for vertice in self.vertices_2:
+            vertice.print_vertice_detalhes()
+
+      if ( atualiza_matriz ):
+         for i in range(len(self.vertices)):
+            for j in range(len(self.vertices)):
+               self.matriz_adj[i][j] = None
+         for vertice in self.vertices_2:
+            for aresta in lista_arestas:
+               if( self.vertices[aresta.i] == vertice.pai and self.vertices[aresta.j] == vertice.conteudo ):
+                  self.adiciona_aresta(vertice.pai, vertice.conteudo, aresta.custo)
+
+   def Dijkstra_direcionado(self, raiz = False, teste_print = True, atualiza_matriz = False):
+      self.zera_visitas()
+      lista_arestas = self.lista_arestas()
+      raiz = 0 if (raiz == False) else self.vertices.index(raiz)
+      self.vertices_2[raiz].bandeira_de_visita = 1
+      self.vertices_2[raiz].distancia = 0
+      i = raiz
+      Q = self.vertices_2
+      V = []
+      while ( len(Q) > 0 ):
+         Q.sort(key=lambda a: a.distancia)
+         vertice_u = Q.pop(0)
+         #vertice_u.print_vertice()
+         V.append(vertice_u)
+
+         i = self.vertices.index(vertice_u.conteudo)
+
+         for j in range(len(self.vertices)):
+            if ( self.matriz_adj[i][j] != None ):  #para pegar somente aqueles que são adjacentes a 'i'
+               #print(i,j)
+               pertence_Q = False
+               for index in range(len(Q)):
+                  if ( Q[index].conteudo == self.vertices[j] ):
+                     pertence_Q = True
+                     break
+               if ( pertence_Q and self.matriz_adj[i][j] < Q[index].distancia ):
+                  Q[index].pai = vertice_u.conteudo
+                  Q[index].distancia = self.matriz_adj[i][j] + vertice_u.distancia
+      if( teste_print ):
+         V.sort(key=lambda a : a.conteudo)
+         for elem in V:
+            elem.print_vertice()
+      
+      if( atualiza_matriz ):
+         for i in range(len(self.vertices)):
+            for j in range(len(self.vertices)):
+               self.matriz_adj[i][j] = None
+         for vertice in V:
+            for aresta in lista_arestas:
+               if( self.vertices[aresta.i] == vertice.pai and self.vertices[aresta.j] == vertice.conteudo ):
+                  self.adiciona_aresta(vertice.pai, vertice.conteudo, aresta.custo)
+      
+
 
 #####__INICIO__DA_EXECUÇÃO__#####
+"""
 grafo = grafo_matriz(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
 #grafo.mostra_grafo()
 #grafo.adicona_vertice("a")
@@ -317,6 +407,36 @@ grafo.adiciona_aresta_sem_direcao("i", "c", 2)
 grafo.adiciona_aresta_sem_direcao("c", "f", 4)
 grafo.adiciona_aresta_sem_direcao("i", "g", 6)
 grafo.adiciona_aresta_sem_direcao("d", "f", 14)
+"""
+
+"""
+#exemplo Bellman
+grafo = grafo_matriz(["s", "t", "x", "y", "z"])
+grafo.adiciona_aresta("s", "t", 6)
+grafo.adiciona_aresta("s", "y", 7)
+grafo.adiciona_aresta("t", "x", 5)
+grafo.adiciona_aresta("x", "t", -2)
+grafo.adiciona_aresta("t", "y", 8)
+grafo.adiciona_aresta("t", "z", -4)
+grafo.adiciona_aresta("y", "x", -3)
+grafo.adiciona_aresta("y", "z", 9)
+grafo.adiciona_aresta("z", "s", 2)
+grafo.adiciona_aresta("z", "x", 7)
+"""
+
+#exemplo dijkstra
+grafo = grafo_matriz(["s", "t", "x", "y", "z"])
+grafo.adiciona_aresta("s", "t", 10)
+grafo.adiciona_aresta("s", "y", 5)
+grafo.adiciona_aresta("t", "x", 1)
+grafo.adiciona_aresta("t", "y", 2)
+grafo.adiciona_aresta("y", "t", 3)
+grafo.adiciona_aresta("y", "x", 9)
+grafo.adiciona_aresta("y", "z", 2)
+grafo.adiciona_aresta("z", "s", 7)
+grafo.adiciona_aresta("z", "x", 6)
+grafo.adiciona_aresta("x", "z", 4)
+
 #grafo.mostra_grafo()
 #grafo.remove_areseta("a", "x")
 #grafo.mostra_grafo()
@@ -331,5 +451,7 @@ print("{:_>100}".format("_"))
 #grafo.kruskal_sem_direcao(teste_print=False, atualiza_matriz=True)
 #grafo.mostra_grafo()
 print("{:_>100}".format("_"))
-grafo.prim_sem_direcao("a", teste_print=False, atualiza_matriz=True)
+#grafo.prim_sem_direcao("a", teste_print=False, atualiza_matriz=True)
+#grafo.Bellman_ford_direcionado(raiz = "s", teste_print=False, atualiza_matriz=True)
+grafo.Dijkstra_direcionado("s", teste_print=True, atualiza_matriz=True)
 grafo.mostra_grafo()
