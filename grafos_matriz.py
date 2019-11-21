@@ -12,7 +12,7 @@ g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura -feit
 i) busca em profundidade -feita
 j) Implmentar os algoritmos Prim e Kruskal - feito
-i) Implmentar os algoritmos Bellamn-Ford e Djikstra
+i) Implmentar os algoritmos Bellamn-Ford e Djikstra -feito
 """
 def np_array_None(linhas, colunas):
    aux = [None]*colunas
@@ -423,7 +423,7 @@ grafo.adiciona_aresta("y", "z", 9)
 grafo.adiciona_aresta("z", "s", 2)
 grafo.adiciona_aresta("z", "x", 7)
 """
-
+"""
 #exemplo dijkstra
 grafo = grafo_matriz(["s", "t", "x", "y", "z"])
 grafo.adiciona_aresta("s", "t", 10)
@@ -455,3 +455,4 @@ print("{:_>100}".format("_"))
 #grafo.Bellman_ford_direcionado(raiz = "s", teste_print=False, atualiza_matriz=True)
 grafo.Dijkstra_direcionado("s", teste_print=True, atualiza_matriz=True)
 grafo.mostra_grafo()
+"""

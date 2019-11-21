@@ -10,7 +10,7 @@ g) Calcular o grau de entrada e o grau de saída de um vértice -feito
 h) Busca em largura -feito
 i) busca em profundidade -feito
 j) Implmentar os algoritmos Prim e Kruskal -feito
-i) Implmentar os algoritmos Bellamn-Ford e Dijkstra -feito
+i) Implmentar os algoritmos Bellman-Ford e Dijkstra -feito
 """
 class arestas_se:
    def __init__(self, custo, u, v):
@@ -462,7 +462,7 @@ grafo.cria_aresta("y", "z", 9)
 grafo.cria_aresta("z", "s", 2)
 grafo.cria_aresta("z", "x", 7)
 """
-
+"""
 grafo = grafo_lista(["s", "t", "x", "y", "z"])
 grafo.cria_aresta("s", "t", 10)
 grafo.cria_aresta("s", "y", 5)
@@ -487,3 +487,4 @@ grafo.print_grafo()
 #grafo.Bellman_ford_direcionado(raiz="s", teste_print=False, atualiza_grafo=True)
 grafo.Dijkstra_direcionado("s", teste_print=False, atualiza_grafo=True)
 grafo.print_grafo()
+"""
