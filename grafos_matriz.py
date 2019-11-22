@@ -59,14 +59,18 @@ class grafo_matriz:
             elem = None
 
 
-   def adicona_vertice(self, conteudo):
+   def adiciona_vertice(self, conteudo):
+      tam = len(self.vertices)
       self.vertices.append(conteudo)
       self.vertices_2.append(vertice(conteudo))
-      tam = len(self.vertices)
-      nova_coluna = np_array_None(tam-1, 1)
-      self.matriz_adj = np.concatenate((self.matriz_adj, nova_coluna), axis=1)
-      nova_linha = np_array_None(1, tam)
-      self.matriz_adj = np.concatenate((self.matriz_adj, nova_linha))
+      if ( tam == 0 ):
+         self.matriz_adj = np_array_None(1, 1)
+      else:
+         tam = len(self.vertices)
+         nova_coluna = np_array_None(tam-1, 1)
+         self.matriz_adj = np.concatenate((self.matriz_adj, nova_coluna), axis=1)
+         nova_linha = np_array_None(1, tam)
+         self.matriz_adj = np.concatenate((self.matriz_adj, nova_linha))
 
    def remove_vertice(self, vertice):
       i = self.vertices.index(vertice)
@@ -76,10 +80,10 @@ class grafo_matriz:
       self.matriz_adj = np.delete(self.matriz_adj, i, 1)
 
    def mostra_grafo(self):
-      _str = '     ['
+      _str = '      '
       for elem in self.vertices:
          _str += '{:>5},'.format(elem)
-      print(_str,"]")
+      print(_str," ")
       tam = len(self.vertices)
       for i in range(tam):
          _str = '{:>5}['.format(self.vertices[i])
@@ -100,7 +104,7 @@ class grafo_matriz:
          self.matriz_adj[v][u] = custo
          self.matriz_adj[u][v] = custo
 
-   def remove_areseta(self,vertice_v, vertice_u):
+   def remove_aresta(self,vertice_v, vertice_u):
       if ( vertice_v and vertice_u in self.vertices ):
          v = self.vertices.index(vertice_v)
          u = self.vertices.index(vertice_u)
@@ -388,71 +392,78 @@ class grafo_matriz:
 
 
 #####__INICIO__DA_EXECUÇÃO__#####
-"""
-grafo = grafo_matriz(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
-#grafo.mostra_grafo()
-#grafo.adicona_vertice("a")
-#grafo.mostra_grafo()
-grafo.adiciona_aresta_sem_direcao("a", "b", 4)
-grafo.adiciona_aresta_sem_direcao("b", "c", 8)
-grafo.adiciona_aresta_sem_direcao("c", "d", 7)
-grafo.adiciona_aresta_sem_direcao("d", "e", 9)
-grafo.adiciona_aresta_sem_direcao("e", "f", 10)
-grafo.adiciona_aresta_sem_direcao("f", "g", 2)
-grafo.adiciona_aresta_sem_direcao("g", "h", 1)
-grafo.adiciona_aresta_sem_direcao("h", "a", 8)
-grafo.adiciona_aresta_sem_direcao("b", "h", 11)
-grafo.adiciona_aresta_sem_direcao("h", "i", 7)
-grafo.adiciona_aresta_sem_direcao("i", "c", 2)
-grafo.adiciona_aresta_sem_direcao("c", "f", 4)
-grafo.adiciona_aresta_sem_direcao("i", "g", 6)
-grafo.adiciona_aresta_sem_direcao("d", "f", 14)
-"""
 
-"""
-#exemplo Bellman
-grafo = grafo_matriz(["s", "t", "x", "y", "z"])
-grafo.adiciona_aresta("s", "t", 6)
-grafo.adiciona_aresta("s", "y", 7)
-grafo.adiciona_aresta("t", "x", 5)
-grafo.adiciona_aresta("x", "t", -2)
-grafo.adiciona_aresta("t", "y", 8)
-grafo.adiciona_aresta("t", "z", -4)
-grafo.adiciona_aresta("y", "x", -3)
-grafo.adiciona_aresta("y", "z", 9)
-grafo.adiciona_aresta("z", "s", 2)
-grafo.adiciona_aresta("z", "x", 7)
-"""
-"""
-#exemplo dijkstra
-grafo = grafo_matriz(["s", "t", "x", "y", "z"])
-grafo.adiciona_aresta("s", "t", 10)
-grafo.adiciona_aresta("s", "y", 5)
-grafo.adiciona_aresta("t", "x", 1)
-grafo.adiciona_aresta("t", "y", 2)
-grafo.adiciona_aresta("y", "t", 3)
-grafo.adiciona_aresta("y", "x", 9)
-grafo.adiciona_aresta("y", "z", 2)
-grafo.adiciona_aresta("z", "s", 7)
-grafo.adiciona_aresta("z", "x", 6)
-grafo.adiciona_aresta("x", "z", 4)
+def exemplo_da_busca_em_largura():
+   grafo = grafo_matriz(["r", "s", "t", "u", "v", "w", "x", "y"])
+   grafo.adiciona_aresta_sem_direcao("r", "s")
+   grafo.adiciona_aresta_sem_direcao("r", "v")
+   grafo.adiciona_aresta_sem_direcao("w", "s")
+   grafo.adiciona_aresta_sem_direcao("t", "w")
+   grafo.adiciona_aresta_sem_direcao("w", "x")
+   grafo.adiciona_aresta_sem_direcao("t", "u")
+   grafo.adiciona_aresta_sem_direcao("t", "x")
+   grafo.adiciona_aresta_sem_direcao("u", "x")
+   grafo.adiciona_aresta_sem_direcao("y", "x")
+   grafo.adiciona_aresta_sem_direcao("y", "u")
+   return grafo
 
-#grafo.mostra_grafo()
-#grafo.remove_areseta("a", "x")
-#grafo.mostra_grafo()
-#grafo.grau_de_entrada_e_saida( "z",print_flag = True)
-#grafo.indentifica_fontes_e_sumidouros()
-#grafo.busca_em_profundidade("w")
-#grafo.busca_largura("w")
-#grafo.remove_vertice("z")
-grafo.mostra_grafo()
-#print(grafo.nao_e_geradora())
-print("{:_>100}".format("_"))
-#grafo.kruskal_sem_direcao(teste_print=False, atualiza_matriz=True)
-#grafo.mostra_grafo()
-print("{:_>100}".format("_"))
-#grafo.prim_sem_direcao("a", teste_print=False, atualiza_matriz=True)
-#grafo.Bellman_ford_direcionado(raiz = "s", teste_print=False, atualiza_matriz=True)
-grafo.Dijkstra_direcionado("s", teste_print=True, atualiza_matriz=True)
-grafo.mostra_grafo()
-"""
+def exemplo_da_busca_em_profundidade():
+   grafo = grafo_matriz(["u", "v", "w", "x", "y", "z"])
+   grafo.adiciona_aresta("u", "v")
+   grafo.adiciona_aresta("u", "x")
+   grafo.adiciona_aresta("x", "v")
+   grafo.adiciona_aresta("v", "y")
+   grafo.adiciona_aresta("y", "x")
+   grafo.adiciona_aresta("w", "y")
+   grafo.adiciona_aresta("w", "z")
+   grafo.adiciona_aresta("z", "z")
+   return grafo
+
+def exemplo_prim_kruskal():
+   grafo = grafo_matriz(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
+   grafo.adiciona_aresta_sem_direcao("a", "b", 4)
+   grafo.adiciona_aresta_sem_direcao("b", "c", 8)
+   grafo.adiciona_aresta_sem_direcao("c", "d", 7)
+   grafo.adiciona_aresta_sem_direcao("d", "e", 9)
+   grafo.adiciona_aresta_sem_direcao("e", "f", 10)
+   grafo.adiciona_aresta_sem_direcao("f", "g", 2)
+   grafo.adiciona_aresta_sem_direcao("g", "h", 1)
+   grafo.adiciona_aresta_sem_direcao("h", "a", 8)
+   grafo.adiciona_aresta_sem_direcao("b", "h", 11)
+   grafo.adiciona_aresta_sem_direcao("h", "i", 7)
+   grafo.adiciona_aresta_sem_direcao("i", "c", 2)
+   grafo.adiciona_aresta_sem_direcao("c", "f", 4)
+   grafo.adiciona_aresta_sem_direcao("i", "g", 6)
+   grafo.adiciona_aresta_sem_direcao("d", "f", 14)
+   return grafo
+
+
+def exemplo_bellman_ford():
+   #exemplo Bellman
+   grafo = grafo_matriz(["s", "t", "x", "y", "z"])
+   grafo.adiciona_aresta("s", "t", 6)
+   grafo.adiciona_aresta("s", "y", 7)
+   grafo.adiciona_aresta("t", "x", 5)
+   grafo.adiciona_aresta("x", "t", -2)
+   grafo.adiciona_aresta("t", "y", 8)
+   grafo.adiciona_aresta("t", "z", -4)
+   grafo.adiciona_aresta("y", "x", -3)
+   grafo.adiciona_aresta("y", "z", 9)
+   grafo.adiciona_aresta("z", "s", 2)
+   grafo.adiciona_aresta("z", "x", 7)
+   return grafo
+
+def exemplo_djikstra():
+   #exemplo dijkstra
+   grafo = grafo_matriz(["s", "t", "x", "y", "z"])
+   grafo.adiciona_aresta("s", "t", 10)
+   grafo.adiciona_aresta("s", "y", 5)
+   grafo.adiciona_aresta("t", "x", 1)
+   grafo.adiciona_aresta("t", "y", 2)
+   grafo.adiciona_aresta("y", "t", 3)
+   grafo.adiciona_aresta("y", "x", 9)
+   grafo.adiciona_aresta("y", "z", 2)
+   grafo.adiciona_aresta("z", "s", 7)
+   grafo.adiciona_aresta("z", "x", 6)
+   grafo.adiciona_aresta("x", "z", 4)
+   return grafo

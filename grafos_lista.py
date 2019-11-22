@@ -351,10 +351,6 @@ class grafo_lista:
                   self.cria_aresta( aresta.u, aresta.v, aresta.custo)
                   break
    
-
-
-
-
 #####__INICIO__DA_EXECUÇÃO__#####
 """
 grafo = grafo_lista()
@@ -378,113 +374,81 @@ grafo.cria_aresta("a", "m")
 grafo.cria_aresta("m", "l")
 grafo.cria_aresta("y", "a")
 grafo.cria_aresta("z", "l")
-
 grafo.cria_aresta("a", "x")
 grafo.cria_aresta("m", "n")
 grafo.cria_aresta("y", "n")
 grafo.cria_aresta("m", "a")
-#grafo.print_grafo()
-#grafo.remove_vertice("a")
-#grafo.remove_aresta("n", "l")
-#grafo.print_grafo()
-#grafo.grau_de_entrada_saida("x", True)
-#grafo.indentifica_fontes_e_sumidouros()
-grafo.print_grafo()
-#print(grafo.vertices[4].adjacente[0].conteudo)
-#grafo.vertices[4].adjacente[0].conteudo = "k"
-#grafo.print_grafo()
-
-#grafo.vertices[4].busca_profundidade("z")
 """
 
-"""
-grafo = grafo_lista(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
-grafo.cria_aresta("r", "s")
-grafo.cria_aresta("s", "r")#
+def exemplo_da_busca_em_largura():
+   grafo = grafo_lista(["r", "s", "t", "u", "v", "w", "x", "y"])
+   grafo.cria_aresta_nao_direcional("r", "s")
+   grafo.cria_aresta_nao_direcional("r", "v")
+   grafo.cria_aresta_nao_direcional("w", "s")
+   grafo.cria_aresta_nao_direcional("t", "w")
+   grafo.cria_aresta_nao_direcional("w", "x")
+   grafo.cria_aresta_nao_direcional("t", "u")
+   grafo.cria_aresta_nao_direcional("t", "x")
+   grafo.cria_aresta_nao_direcional("u", "x")
+   grafo.cria_aresta_nao_direcional("y", "x")
+   grafo.cria_aresta_nao_direcional("y", "u")
+   return grafo
 
-grafo.cria_aresta("r", "v")
-grafo.cria_aresta("v", "r")#
+def exemplo_da_busca_em_profundidade():
+   grafo = grafo_lista(["u", "v", "w", "x", "y", "z"])
+   grafo.cria_aresta("u", "v")
+   grafo.cria_aresta("u", "x")
+   grafo.cria_aresta("x", "v")
+   grafo.cria_aresta("v", "y")
+   grafo.cria_aresta("y", "x")
+   grafo.cria_aresta("w", "y")
+   grafo.cria_aresta("w", "z")
+   grafo.cria_aresta("z", "z")
+   return grafo
+   
 
-grafo.cria_aresta("w", "s")
-grafo.cria_aresta("s", "w")#
+def exemplo_prim_kruskal():
+   grafo = grafo_lista(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
+   grafo.cria_aresta_nao_direcional("a", "b", 4)
+   grafo.cria_aresta_nao_direcional("b", "c", 8)
+   grafo.cria_aresta_nao_direcional("c", "d", 7)
+   grafo.cria_aresta_nao_direcional("d", "e", 9)
+   grafo.cria_aresta_nao_direcional("e", "f", 10)
+   grafo.cria_aresta_nao_direcional("f", "g", 2)
+   grafo.cria_aresta_nao_direcional("g", "h", 1)
+   grafo.cria_aresta_nao_direcional("h", "a", 8)
+   grafo.cria_aresta_nao_direcional("b", "h", 11)
+   grafo.cria_aresta_nao_direcional("h", "i", 7)
+   grafo.cria_aresta_nao_direcional("i", "c", 2)
+   grafo.cria_aresta_nao_direcional("c", "f", 4)
+   grafo.cria_aresta_nao_direcional("i", "g", 6)
+   grafo.cria_aresta_nao_direcional("d", "f", 14)
+   return grafo
 
-grafo.cria_aresta("t", "w")
-grafo.cria_aresta("w", "t")#
+def exemplo_bellman_ford():
+   grafo = grafo_lista(["s", "t", "x", "y", "z"])
+   grafo.cria_aresta("s", "t", 6)
+   grafo.cria_aresta("s", "y", 7)
+   grafo.cria_aresta("t", "x", 5)
+   grafo.cria_aresta("x", "t", -2)
+   grafo.cria_aresta("t", "y", 8)
+   grafo.cria_aresta("t", "z", -4)
+   grafo.cria_aresta("y", "x", -3)
+   grafo.cria_aresta("y", "z", 9)
+   grafo.cria_aresta("z", "s", 2)
+   grafo.cria_aresta("z", "x", 7)
+   return grafo
 
-grafo.cria_aresta("w", "x")
-grafo.cria_aresta("x", "w")#
-
-grafo.cria_aresta("t", "u")
-grafo.cria_aresta("u", "t")#
-
-grafo.cria_aresta("t", "x")
-grafo.cria_aresta("x", "t")#
-
-grafo.cria_aresta("u", "x")
-grafo.cria_aresta("x", "u")#
-
-grafo.cria_aresta("y", "x")
-grafo.cria_aresta("x", "y")#
-
-grafo.cria_aresta("y", "u")
-grafo.cria_aresta("u", "y")#
-"""
-
-"""
-grafo = grafo_lista(["a", "b", "c", "d", "e", "f", "g", "h", "i"])
-grafo.cria_aresta_nao_direcional("a", "b", 4)
-grafo.cria_aresta_nao_direcional("b", "c", 8)
-grafo.cria_aresta_nao_direcional("c", "d", 7)
-grafo.cria_aresta_nao_direcional("d", "e", 9)
-grafo.cria_aresta_nao_direcional("e", "f", 10)
-grafo.cria_aresta_nao_direcional("f", "g", 2)
-grafo.cria_aresta_nao_direcional("g", "h", 1)
-grafo.cria_aresta_nao_direcional("h", "a", 8)
-grafo.cria_aresta_nao_direcional("b", "h", 11)
-grafo.cria_aresta_nao_direcional("h", "i", 7)
-grafo.cria_aresta_nao_direcional("i", "c", 2)
-grafo.cria_aresta_nao_direcional("c", "f", 4)
-grafo.cria_aresta_nao_direcional("i", "g", 6)
-grafo.cria_aresta_nao_direcional("d", "f", 14)
-grafo.print_grafo()
-"""
-
-"""
-grafo = grafo_lista(["s", "t", "x", "y", "z"])
-grafo.cria_aresta("s", "t", 6)
-grafo.cria_aresta("s", "y", 7)
-grafo.cria_aresta("t", "x", 5)
-grafo.cria_aresta("x", "t", -2)
-grafo.cria_aresta("t", "y", 8)
-grafo.cria_aresta("t", "z", -4)
-grafo.cria_aresta("y", "x", -3)
-grafo.cria_aresta("y", "z", 9)
-grafo.cria_aresta("z", "s", 2)
-grafo.cria_aresta("z", "x", 7)
-"""
-"""
-grafo = grafo_lista(["s", "t", "x", "y", "z"])
-grafo.cria_aresta("s", "t", 10)
-grafo.cria_aresta("s", "y", 5)
-grafo.cria_aresta("t", "x", 1)
-grafo.cria_aresta("t", "y", 2)
-grafo.cria_aresta("y", "t", 3)
-grafo.cria_aresta("y", "x", 9)
-grafo.cria_aresta("y", "z", 2)
-grafo.cria_aresta("z", "s", 7)
-grafo.cria_aresta("z", "x", 6)
-grafo.cria_aresta("x", "z", 4)
-
-grafo.print_grafo()
-#grafo.vertices[1].busca_profundidade_2()
-#grafo.vertices[0].busca_largura()
-#a = grafo.lista_arestas()
-#for elem in a:
-#   elem.print_arestas_se()
-
-#grafo.kruskal_sem_direcao()
-#grafo.prim_sem_direcao(raiz = "a", teste_print=False, atualiza_matriz=True)
-#grafo.Bellman_ford_direcionado(raiz="s", teste_print=False, atualiza_grafo=True)
-grafo.Dijkstra_direcionado("s", teste_print=False, atualiza_grafo=True)
-grafo.print_grafo()
-"""
+def exemplo_djikstra():
+   grafo = grafo_lista(["s", "t", "x", "y", "z"])
+   grafo.cria_aresta("s", "t", 10)
+   grafo.cria_aresta("s", "y", 5)
+   grafo.cria_aresta("t", "x", 1)
+   grafo.cria_aresta("t", "y", 2)
+   grafo.cria_aresta("y", "t", 3)
+   grafo.cria_aresta("y", "x", 9)
+   grafo.cria_aresta("y", "z", 2)
+   grafo.cria_aresta("z", "s", 7)
+   grafo.cria_aresta("z", "x", 6)
+   grafo.cria_aresta("x", "z", 4)
+   return grafo
