@@ -173,7 +173,7 @@ while( on ):
       elif ( tipo_do_grafo == "matriz" ):
          grafo.indentifica_fontes_e_sumidouros()
    
-   elif ( entrada == 10 ): #identifica grau de entrada e saida
+   elif ( entrada == 11 ): #identifica grau de entrada e saida
       print("{:^40}".format("identificando graus de entrada e saida"))
       vertice = str(input("informe o conteudo do vertice: "))
       if ( tipo_do_grafo == "lista" ):
