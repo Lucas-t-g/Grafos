@@ -22,6 +22,7 @@ def menu():
    print("{:^40}".format("15-algoritmo Kruskal"))
    print("{:^40}".format("16-algoritmo Bellman-Ford"))
    print("{:^40}".format("17-algoritmo Dijkstra"))
+   print("{:^40}".format("18-converter grafo(lista->matriz/matriz->lista)"))
    print("{:^40}".format("0-para sair"))
    print("{:-^40}".format("END_MENU"))
 
@@ -76,6 +77,35 @@ def grafos_prontos():
          return gm.exemplo_bellman_ford(), "matriz"
       if ( entrada2 == 5 ):   #exemplo dijkstra
          return gm.exemplo_djikstra(), "matriz"
+
+def converter_grafo(grafo, tipo_do_grafo):
+   if (tipo_do_grafo == None):
+      print("primeiro crie um grafo.")
+      return 
+   elif (tipo_do_grafo == "matriz"):
+      grafo_aux = gl.grafo_lista(grafo.vertices)
+      arestas = grafo.lista_arestas()
+      for aresta in arestas:
+         u = grafo.vertices[aresta.i]
+         v = grafo.vertices[aresta.j]
+         grafo_aux.cria_aresta(u, v, aresta.custo)
+      
+      return grafo_aux, "lista"
+
+   elif (tipo_do_grafo == "lista"):
+      lista_vertices = []
+      for vertice in grafo.vertices:
+         lista_vertices.append(vertice.conteudo)
+
+      grafo_aux = gm.grafo_matriz(lista_vertices)
+      arestas = grafo.lista_arestas_direcionadas()
+
+      for aresta in arestas:
+         grafo_aux.adiciona_aresta(aresta.u, aresta.v, aresta.custo)
+      
+      return grafo_aux, "matriz"
+
+
 
 
 
@@ -230,3 +260,14 @@ while( on ):
          grafo.Dijkstra_direcionado(vertice, atualiza_grafo=True)
       elif ( tipo_do_grafo == "matriz" ):
          grafo.Dijkstra_direcionado(vertice, atualiza_matriz=True)
+   
+   elif ( entrada == 18 ): #converte grafo
+      if (tipo_do_grafo == None):
+         print("primeiro crie um grafo!")
+         continue
+      else:
+         print("{:^40}".format("convertendo grafo"))
+         print("{:^40}".format("de: "+tipo_do_grafo))
+         grafo, tipo_do_grafo = converter_grafo(grafo, tipo_do_grafo)
+         print("{:^40}".format("para: "+tipo_do_grafo))
+      
