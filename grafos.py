@@ -16,9 +16,12 @@ def menu():
    print("{:^40}".format("9-para visualizar o grafo"))
    print("{:^40}".format("10-para identificar fontes e sumidouros"))
    print("{:^40}".format("11-para ver os graus de entrada e saida"))
-   #print("{:^40}".format(""))
-   #print("{:^40}".format(""))
-   #print("{:^40}".format(""))
+   print("{:^40}".format("12-busca em largura"))
+   print("{:^40}".format("13-busca em profundidade"))
+   print("{:^40}".format("14-algoritmo Prim"))
+   print("{:^40}".format("15-algoritmo Kruskal"))
+   print("{:^40}".format("16-algoritmo Bellman-Ford"))
+   print("{:^40}".format("17-algoritmo Dijkstra"))
    print("{:^40}".format("0-para sair"))
    print("{:-^40}".format("END_MENU"))
 
@@ -180,4 +183,50 @@ while( on ):
          grafo.grau_de_entrada_saida(vertice, True)
       elif ( tipo_do_grafo == "matriz" ):
          grafo.grau_de_entrada_e_saida(vertice, True)
+
+   elif ( entrada == 12 ): #busca em largura
+      print("{:^40}".format("busca em largura"))
+      vertice = str(input("informe o conteudo do vertice: "))
+      if ( tipo_do_grafo == "lista" ):
+         grafo.busca_em_largura(vertice)
+      elif ( tipo_do_grafo == "matriz" ):
+         grafo.busca_largura(vertice)
    
+   elif ( entrada == 13 ): #busca em profundidade
+      print("{:^40}".format("busca em largura"))
+      vertice = str(input("informe o conteudo do vertice: "))
+      if ( tipo_do_grafo == "lista" ):
+         grafo.busca_em_profundidade(vertice)
+      elif ( tipo_do_grafo == "matriz" ):
+         grafo.busca_em_profundidade(vertice)
+
+   elif ( entrada == 14 ): #algoritmo Prim
+      print("{:^40}".format("algoritmo Prim"))
+      vertice = str(input("informe o conteudo do vertice: "))
+      if ( tipo_do_grafo == "lista" ):
+         grafo.prim_sem_direcao(vertice, atualiza_matriz=True)
+      elif ( tipo_do_grafo == "matriz" ):
+         grafo.prim_sem_direcao(vertice, atualiza_matriz=True)
+   
+   elif ( entrada == 15 ): #algoritmo Kruskal
+      print("{:^40}".format("algoritmo Kruskal"))
+      if ( tipo_do_grafo == "lista" ):
+         grafo.kruskal_sem_direcao(atualiza_grafo=True)
+      elif ( tipo_do_grafo == "matriz" ):
+         grafo.kruskal_sem_direcao(atualiza_matriz=True)
+   
+   elif ( entrada == 16 ): #algoritmo Bellman-Ford
+      print("{:^40}".format("algoritmo Bellman-Ford"))
+      vertice = str(input("informe o conteudo do vertice: "))
+      if ( tipo_do_grafo == "lista" ):
+         grafo.Bellman_ford_direcionado(vertice, atualiza_grafo=True)
+      elif ( tipo_do_grafo == "matriz" ):
+         grafo.Bellman_ford_direcionado(vertice, atualiza_matriz=True)
+
+   elif ( entrada == 17 ): #algoritmo Dijkstra
+      print("{:^40}".format("algoritmo Dijkstra"))
+      vertice = str(input("informe o conteudo do vertice: "))
+      if ( tipo_do_grafo == "lista" ):
+         grafo.Dijkstra_direcionado(vertice, atualiza_grafo=True)
+      elif ( tipo_do_grafo == "matriz" ):
+         grafo.Dijkstra_direcionado(vertice, atualiza_matriz=True)

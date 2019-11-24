@@ -9,7 +9,7 @@ d) Remover aresta  -feito
 e) Visualizar o grafo -feito
 f) Identificar Fontes e sumidouros -feito
 g) Calcular o grau de entrada e o grau de saída de um vértice -feito
-h) Busca em largura -feit
+h) Busca em largura -feito
 i) busca em profundidade -feita
 j) Implmentar os algoritmos Prim e Kruskal - feito
 i) Implmentar os algoritmos Bellamn-Ford e Djikstra -feito
@@ -192,6 +192,9 @@ class grafo_matriz:
                lista.insert(0, self.vertices_2[j])
                print("vertice w: ", self.vertices_2[j].conteudo, "distância: ", self.vertices_2[j].distancia, "pai: ", self.vertices_2[j].pai, "bdv: ", self.vertices_2[j].bandeira_de_visita)
 
+      for vertice in self.vertices_2:
+         vertice.print_vertice()
+
    def lista_arestas(self):
       lista  = []
       tam = len(self.vertices)
@@ -241,13 +244,19 @@ class grafo_matriz:
    def kruskal_sem_direcao(self, teste_print = True, atualiza_matriz = False):
       aux = grafo_matriz(self.vertices)
       arestas = self.lista_arestas()
+
+      print("{:-^40}".format("arestas"))
+      for aresta in arestas:
+         aresta.print_arestas_se()
+      print("{:-^40}".format(""))
+
+      print("{:^40}".format("arestas adicionadas:"))
       while ( aux.nao_e_geradora() and len(arestas) > 0 ):
          aresta = arestas.pop(0)
          aux.zera_visitas()
          temp = aux.busca_em_profundidade_2(self.vertices[aresta.i], self.vertices[aresta.j])
          if ( not temp ):
-            if ( teste_print ):
-               print("i = ", aresta.i," -> ", aux.vertices[aresta.i], "|| j = ", aresta.j," -> ", aux.vertices[aresta.j])
+            aresta.print_arestas_se()
             aux.matriz_adj[aresta.i][aresta.j] = aresta.custo
             aux.matriz_adj[aresta.j][aresta.i] = aresta.custo
 

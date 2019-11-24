@@ -113,6 +113,27 @@ class grafo_lista:
             return vertice
       return None
    
+   def busca_em_largura(self, raiz = False):
+      self.zera_visitas()
+      if ( raiz == False ):
+         raiz = 0
+      else:
+         raiz = self.index(raiz)
+      
+      self.vertices[raiz].busca_largura()
+
+      for vertice in self.vertices:
+         vertice.print_vertice_detalhes()
+
+   def busca_em_profundidade(self, raiz = False):
+      self.zera_visitas()
+      if ( raiz == False ):
+         raiz = 0
+      else:
+         raiz = self.index(raiz)
+      
+      self.vertices[raiz].busca_profundidade_2()
+   
    def cria_aresta(self, vertice_v, vertice_u, custo = 1):    #cria vertice direcional de v para u
       if(vertice_u != None and vertice_v != None):
          vertice_a = self.busca_vertice(vertice_v)
@@ -210,14 +231,20 @@ class grafo_lista:
          vertice.adjacente = []
          vertice.custo_aresta = []
    
-   def kruskal_sem_direcao(self, teste_print = True, atualiza_matriz = False):
+   def kruskal_sem_direcao(self, teste_print = True, atualiza_grafo = False):
       lista_arestas = self.lista_arestas()
+      print("{:-^40}".format("arestas"))
+      for aresta in lista_arestas:
+         aresta.print_arestas_se()
+      print("{:-^40}".format(""))
       self.zera_arestas()
+      print("{:^40}".format("arestas adicionadas:"))
       while ( self.nao_e_geradora and len(lista_arestas) > 0 ):
          aresta = lista_arestas.pop(0)
          self.zera_visitas()
          vertice_u = self.busca_vertice(aresta.u)
          if( vertice_u.busca_profundidade(aresta.v) == None ):
+            aresta.print_arestas_se()
             self.cria_aresta_nao_direcional(aresta.u, aresta.v)
 
    def index(self, vertice_u):
@@ -226,7 +253,7 @@ class grafo_lista:
             return i
       return None
 
-   def prim_sem_direcao(self, raiz = False, teste_print = True, atualiza_matriz = False):
+   def prim_sem_direcao(self, raiz = False, teste_print = True, atualiza_grafo = False):
       self.zera_visitas()
       if ( raiz == False ):
          raiz = 0
@@ -255,7 +282,7 @@ class grafo_lista:
       if( teste_print ):
          for elem in V:
             print("v: {:^6} | pai: {:^6} | d: {:^6} | bdv: {:^6}".format(str(elem.conteudo), str(elem.pai), str(elem.distancia), str(elem.bandeira_de_visita)))
-      if( atualiza_matriz ):
+      if( atualiza_grafo ):
          self.zera_arestas()
          V.sort(key=lambda a : a.conteudo)
          for elem in V:
